@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>R10N</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background-color: #E6E6E6; 
+      }
+      h1, h2 {
+        color: #068B9D;
+      }
+      h3 {
+        color: #068B9D;
+        font-size: 1.2em;
+        font-weight: normal;
+      }
+      a {
+        color: #068B9D;
+        text-decoration: none;
+      }
+      #container {
+        width: 70%;
+        min-width: 700px;
+        margin: 100px auto;
+        background-color: #FFF;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 5px rgba(0,0,0,.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+		<center>
+		
+		<a href="/"><img src="log.png" style="width:250px; height:200px:" alt="Foogle"></a><br>
+			<form action="http://www.google.com/search" method="get">
+			<input style="width: 80%;box-sizing: border-box;border: 2px solid #ccc;border-radius: 4px;font-size: 16px;background-color: white;background-image: url('searchicon.png'); background-position: 10px 10px;background-repeat: no-repeat;padding: 12px 20px 12px 40px;" type="text" name="q" placeholder="Search..." />
+			<!--<input style="width: 10%;height:46px; box-sizing: border-box;border: 2px solid #ccc;border-radius: 4px;font-size: 20px;" type="submit" value="Search">-->
+			<!--<input style="border-style: hidden;" type="submit" value=""/>-->
+			</form>
+			<br><br><br>
+			
+			  <iframe src="https://free.timeanddate.com/clock/i8p86e74/n73/tt0/tw1/tm1/th2/tb2" frameborder="0" width="238" height="18"></iframe>
+
+
+
+			<footer>
+				<i style="font-size:10px;">Copyright @2014 || By courtesy of <a href=https://www.fb.com/tariqul966>Tariqul Hasan</a>.</i>
+			</footer>
+		</center>
+    </div>
+
+<script>
+	// Disable right-click
+document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+function ctrlShiftKey(e, keyCode) {
+  return e.ctrlKey && e.shiftKey && e.keyCode === keyCode.charCodeAt(0);
+}
+
+document.onkeydown = (e) => {
+  // Disable F12, Ctrl + Shift + I, Ctrl + Shift + J, Ctrl + U
+  if (
+    event.keyCode === 123 ||
+    ctrlShiftKey(e, 'I') ||
+    ctrlShiftKey(e, 'J') ||
+    ctrlShiftKey(e, 'C') ||
+    (e.ctrlKey && e.keyCode === 'U'.charCodeAt(0))
+  )
+    return false;
+};
+</script>
+
+  </body>
+</html>
