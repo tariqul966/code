@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Search</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+img {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  width: 150px;
+}
+
+img:hover {
+  box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+}
+
+
+</style>
+</head>
+<body>
+<center>
+
+
+<a href="index.html" style="text-decoration:none;"><h1 style="color:green; font-size:80px; ">Search</h1></a>
+			<form action="https://www.google.com/search" method="get">
+			<input style="width: 60%;box-sizing: border-box;border: 2px solid #ccc;border-radius: 4px;font-size: 16px;background-color: white;background-image: url('img/searchicon.png'); background-position: 10px 10px;background-repeat: no-repeat;padding: 12px 20px 12px 40px;" type="text" name="q" placeholder="Search..." />
+			<!--<input style="width: 10%;height:46px; box-sizing: border-box;border: 2px solid #ccc;border-radius: 4px;font-size: 20px;" type="submit" value="Search">
+			<input style="border-style: hidden;" type="submit" value=""/>-->
+			</form>
+			<br><br><br>
+
+<a target="_blank" href="https://www.youtube.com/">
+  <img src="img/youtube.jpg" alt="Forest" style="width:150px">
+</a>
+<a target="_blank" href="https://www.google.com/">
+  <img src="img/google.png" alt="Forest" style="width:150px">
+</a>
+<a target="_blank" href="https://mail.google.com/mail">
+  <img src="img/gmail.png" alt="Forest" style="width:150px">
+</a>
+<a target="_blank" href="https://www.facebook.com/">
+  <img src="img/fb.png" alt="Forest" style="width:150px">
+</a>
+<a target="_blank" href="https://twitter.com/">
+  <img src="img/twitter.png" alt="Forest" style="width:150px">
+</a>
+<a target="_blank" href="https://mail.yahoo.com/">
+  <img src="img/yahoo.png" alt="Forest" style="width:150px">
+</a>
+
+<br><br>
+
+
+			<footer>
+				<i style="font-size:10px;">Copyright @2014 || By courtesy of <a href=https://www.fb.com/tariqul966>Tariqul Hasan</a>.</i>
+			</footer>
+
+
+
+
+</center>
+
+
+
+
+
+
+<script>
+	// Disable right-click
+document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+function ctrlShiftKey(e, keyCode) {
+  return e.ctrlKey && e.shiftKey && e.keyCode === keyCode.charCodeAt(0);
+}
+
+document.onkeydown = (e) => {
+  // Disable F12, Ctrl + Shift + I, Ctrl + Shift + J, Ctrl + U
+  if (
+    event.keyCode === 123 ||
+    ctrlShiftKey(e, 'I') ||
+    ctrlShiftKey(e, 'J') ||
+    ctrlShiftKey(e, 'C') ||
+    (e.ctrlKey && e.keyCode === 'U'.charCodeAt(0))
+  )
+    return false;
+};
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
