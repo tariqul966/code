@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>IP Lookup</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+	h1 {
+	  color: #4CAF50;
+	}
+    .search-container {
+      display: flex;
+	  width: 500px;
+      align-items: center;
+    }
+
+    .search-input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px 0 0 5px;
+      width: calc(100% - 40px); 
+    }
+
+    .search-button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: 1px;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+    }
+	.footer {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      background-color: #4CAF50;
+      color: white;
+      text-align: center;
+	}
+  </style>
+</head>
+<body>
+<center>
+<h1>IP Lookup</h1>
+<form class="search-container"action="https://whatismyipaddress.com/ip-lookup" method="POST">
+
+    <input type="text" name="LOOKUPADDRESS" class="search-input" placeholder="Search...">
+    <button type="submit" class="search-button">Search</button>
+  </form>
+</center>
+<div class="footer">© 2025 IP Lookup || Developed by Rion</div>
+</body>
+</html>
