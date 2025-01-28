@@ -1,0 +1,44 @@
+
+	
+	
+<!DOCTYPE html>
+<html>
+<head>
+<style> 
+input[type=text] {
+  width: 30%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 1px solid black;
+  border-radius: 5px;
+  align:center;
+}
+input[type=submit] {
+  width: 10%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+.iframe{
+  border:0px solid black;
+  }
+.form{
+  text-align:center;
+  }
+</style>
+</head>
+<body>
+
+<form class="form" name="lookup" method="post" action="https://www.iplocation.net/ip-lookup" target="abc">
+        <input id="ip_address" type="text" name="query" placeholder="IPv4, IPv6 or Domain Name">
+        <input type="submit" name="submit" value="Find">
+</form> <hr>
+
+<iframe class="iframe" name="abc" srcdoc="" height="500px" width="100%" scrolling="no"></iframe>
+
+
+</body>
+</html>
