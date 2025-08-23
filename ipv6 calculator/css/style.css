@@ -1,0 +1,19 @@
+/*
+ Theme Name:   GeneratePress Child
+ Theme URI:    https://example.com/generatepress-child/
+ Description:  GeneratePress Child Theme
+ Author:       DS
+ Author URI:   
+ Template:     generatepress
+ Version:      1.0.0
+ License:      GNU General Public License v2 or later
+ License URI:  http://www.gnu.org/licenses/gpl-2.0.html
+ Tags:         light, dark, two-columns, right-sidebar, responsive-layout, accessibility-ready
+ Text Domain:  generatepresschild
+*/
+
+button {margin: 10px 5px 10px 0;
+    border-radius: 10px;}
+input[type='checkbox'] { margin-right:10px; }
+span.column {width: 257px;
+    float: left;}
