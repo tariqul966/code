@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group P2P Mesh Chat</title>
+    <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; display: flex; justify-content: center; padding: 20px; }
+        
+        .container { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 20px; }
+        
+        /* Connection Area */
+        .setup-box { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
+        input { padding: 10px; border: 1px solid #ddd; border-radius: 6px; width: 250px; }
+        button { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; background: #007bff; color: white; font-weight: bold; }
+        button.host-btn { background: #28a745; }
+
+        /* Video Grid */
+        #video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+        video { width: 100%; background: #000; border-radius: 10px; border: 2px solid #ddd; transform: scaleX(-1); }
+
+        /* Chat Area */
+        .chat-section { background: white; border-radius: 12px; height: 400px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        #chat-window { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .msg { padding: 8px 12px; border-radius: 8px; max-width: 70%; font-size: 14px; }
+        .sent { align-self: flex-end; background: #dcf8c6; }
+        .received { align-self: flex-start; background: #fff; border: 1px solid #ddd; }
+        .input-area { display: flex; padding: 10px; border-top: 1px solid #eee; gap: 10px; }
+        #message-input { flex: 1; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="setup-box">
+        <h2>Multi-User P2P Chat & Video</h2>
+        <p style="margin: 10px 0;">আপনার আইডি: <strong id="my-id">...</strong></p>
+        <input type="text" id="join-id" placeholder="Enter Host ID to Join">
+        <button onclick="joinRoom()">Join Group</button>
+    </div>
+
+    <div id="video-grid">
+        <!-- এখানে সবার ভিডিও লোড হবে -->
+        <div><video id="localVideo" autoplay muted playsinline></video><p align="center">আপনি</p></div>
+    </div>
+
+    <div class="chat-section">
+        <div id="chat-window"></div>
+        <div class="input-area">
+            <input type="text" id="message-input" placeholder="গ্রুপে কিছু লিখুন...">
+            <button onclick="sendGroupMessage()">Send</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const myIdDisplay = document.getElementById('my-id');
+    const videoGrid = document.getElementById('video-grid');
+    const chatWindow = document.getElementById('chat-window');
+    const messageInput = document.getElementById('message-input');
+
+    const peer = new Peer();
+    let myStream;
+    let peers = {}; // সকল কানেকশন ট্র্যাক করার জন্য
+    let connections = []; // চ্যাট কানেকশন লিস্ট
+
+    // ১. নিজের মিডিয়া সেটআপ
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
+        myStream = stream;
+        addVideoStream(document.getElementById('localVideo'), stream);
+    });
+
+    // ২. আইডি জেনারেট হলে দেখানো
+    peer.on('open', id => {
+        myIdDisplay.innerText = id;
+    });
+
+    // ৩. নতুন কেউ কল করলে (ভিডিওর জন্য)
+    peer.on('call', call => {
+        call.answer(myStream);
+        const video = document.createElement('video');
+        call.on('stream', userVideoStream => {
+            addVideoStream(video, userVideoStream);
+        });
+    });
+
+    // ৪. নতুন কেউ চ্যাটে কানেক্ট হলে
+    peer.on('connection', conn => {
+        connections.push(conn);
+        setupConnEvents(conn);
+    });
+
+    // গ্রুপে জয়েন করার ফাংশন
+    function joinRoom() {
+        const hostId = document.getElementById('join-id').value;
+        if (!hostId) return alert("Host ID দিন");
+
+        // হোস্টকে কল করা
+        const call = peer.call(hostId, myStream);
+        const video = document.createElement('video');
+        call.on('stream', userVideoStream => {
+            addVideoStream(video, userVideoStream);
+        });
+
+        // হোস্টের চ্যাটে কানেক্ট হওয়া
+        const conn = peer.connect(hostId);
+        connections.push(conn);
+        setupConnEvents(conn);
+    }
+
+    function setupConnEvents(conn) {
+        conn.on('data', data => {
+            appendMessage(data.user + ": " + data.msg, 'received');
+            
+            // যদি আমি হোস্ট হই, তবে এই মেসেজ বাকি সবার কাছে ফরওয়ার্ড করা (Mesh logic)
+            if (peer.id === myIdDisplay.innerText) {
+                broadcast(data);
+            }
+        });
+    }
+
+    function sendGroupMessage() {
+        const msg = messageInput.value;
+        if (!msg) return;
+
+        const data = { user: peer.id.substring(0, 5), msg: msg };
+        appendMessage("Me: " + msg, 'sent');
+        
+        broadcast(data);
+        messageInput.value = "";
+    }
+
+    function broadcast(data) {
+        connections.forEach(conn => {
+            if (conn.open) {
+                conn.send(data);
+            }
+        });
+    }
+
+    function addVideoStream(video, stream) {
+        video.srcObject = stream;
+        video.addEventListener('loadedmetadata', () => {
+            video.play();
+        });
+        const div = document.createElement('div');
+        div.appendChild(video);
+        videoGrid.append(div);
+    }
+
+    function appendMessage(text, type) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `msg ${type}`;
+        msgDiv.innerText = text;
+        chatWindow.appendChild(msgDiv);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    messageInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") sendGroupMessage();
+    });
+</script>
+
+</body>
+</html>
