@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M3U8 Player Link Generator v2</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a2e; /* ডার্ক থিম */
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #16213e;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            width: 100%;
+            max-width: 550px;
+            border: 1px solid #0f3460;
+        }
+        h2 {
+            text-align: center;
+            color: #4ecca3;
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #95a5a6;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #0f3460;
+            border-radius: 8px;
+            background: #1a1a2e;
+            color: #fff;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #4ecca3;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .gen-btn {
+            background-color: #4ecca3;
+            color: #1a1a2e;
+        }
+        .gen-btn:hover {
+            background-color: #45b291;
+        }
+        .result-box {
+            margin-top: 25px;
+            padding: 15px;
+            background: #0f3460;
+            border-radius: 8px;
+            display: none;
+            border-left: 4px solid #4ecca3;
+        }
+        .url-display {
+            word-break: break-all;
+            background: #1a1a2e;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 13px;
+            color: #4ecca3;
+        }
+        .copy-btn {
+            background-color: #e94560;
+            color: white;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .copy-btn:hover {
+            background-color: #c92c4a;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>M3U8 Player Link Generator v2</h2>
+    
+    <label>Paste your M3U8 Stream Link:</label>
+    <input type="text" id="m3u8Input" placeholder="https://live-stream.com/index.m3u8">
+    
+    <button class="gen-btn" onclick="generateLink()">Generate Player Link</button>
+
+    <div id="resultBox" class="result-box">
+        <label>Ready to Use Link:</label>
+        <div class="url-display" id="finalUrl"></div>
+        <button class="copy-btn" onclick="copyToClipboard()">Copy to Clipboard</button>
+    </div>
+</div>
+
+<script>
+    function generateLink() {
+        const input = document.getElementById('m3u8Input').value.trim();
+        const resultBox = document.getElementById('resultBox');
+        const display = document.getElementById('finalUrl');
+
+        if (!input) {
+            alert("Please enter a URL first!");
+            return;
+        }
+
+        // নতুন ফরম্যাট অনুযায়ী লিঙ্ক জেনারেট
+        const baseUrl = "https://bharadwajpro.github.io/m3u8-player/player/#";
+        const fullLink = baseUrl + input;
+
+        display.innerText = fullLink;
+        resultBox.style.display = "block";
+    }
+
+    function copyToClipboard() {
+        const text = document.getElementById('finalUrl').innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            alert("Link copied successfully!");
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+        });
+    }
+</script>
+
+</body>
+</html>
