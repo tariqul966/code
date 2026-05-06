@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P2P Video Chat - Single File</title>
+    <!-- PeerJS Library -->
+    <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #e5ddd5; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        
+        .main-container { display: flex; flex-wrap: wrap; gap: 20px; max-width: 1000px; width: 100%; justify-content: center; }
+        
+        /* Video Section */
+        .video-wrapper { display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 320px; }
+        video { width: 100%; background: #2c3e50; border-radius: 12px; transform: scaleX(-1); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        #remoteVideo { transform: scaleX(1); } /* Remote video should not be mirrored */
+        
+        /* Chat Section */
+        .chat-wrapper { flex: 1; min-width: 320px; background: #fff; display: flex; flex-direction: column; border-radius: 12px; height: 500px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        #chat-box { flex: 1; padding: 15px; overflow-y: auto; background: #f9f9f9; border-radius: 12px 12px 0 0; border-bottom: 1px solid #ddd; }
+        .input-group { display: flex; padding: 10px; gap: 5px; }
+        input[type="text"] { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px; outline: none; }
+        button { padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; background: #25d366; color: white; font-weight: bold; }
+        button:hover { background: #128c7e; }
+
+        .connection-info { background: #fff; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center; width: 100%; max-width: 800px; }
+        .my-id { color: #075e54; font-weight: bold; cursor: pointer; text-decoration: underline; }
+        .msg { margin-bottom: 8px; padding: 8px 12px; border-radius: 8px; max-width: 80%; }
+        .received { background: #fff; align-self: flex-start; border: 1px solid #ddd; }
+        .sent { background: #dcf8c6; align-self: flex-end; margin-left: auto; }
+    </style>
+</head>
+<body>
+
+    <div class="connection-info">
+        <h3>P2P Private Room</h3>
+        <p>আপনার আইডি: <span id="my-id" class="my-id">লোডিং...</span> (ক্লিক করে কপি করুন)</p>
+        <div style="margin-top: 10px;">
+            <input type="text" id="remote-id-input" placeholder="বন্ধুর আইডি এখানে দিন">
+            <button onclick="startConnection()">Connect & Call</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <!-- Video Part -->
+        <div class="video-wrapper">
+            <div><video id="localVideo" autoplay muted playsinline></video><p style="text-align:center">আপনি</p></div>
+            <div><video id="remoteVideo" autoplay playsinline></video><p style="text-align:center">বন্ধু</p></div>
+        </div>
+
+        <!-- Chat Part -->
+        <div class="chat-wrapper">
+            <div id="chat-box"></div>
+            <div class="input-group">
+                <input type="text" id="message-input" placeholder="মেসেজ লিখুন...">
+                <button onclick="sendChatMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const myIdDisplay = document.getElementById('my-id');
+        const remoteIdInput = document.getElementById('remote-id-input');
+        const chatBox = document.getElementById('chat-box');
+        const messageInput = document.getElementById('message-input');
+        
+        let peer = new Peer(); 
+        let conn;
+        let localStream;
+
+        // ক্যামেরা এবং অডিও পারমিশন নেওয়া
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+            .then(stream => {
+                localStream = stream;
+                document.getElementById('localVideo').srcObject = stream;
+            }).catch(err => {
+                alert("ক্যামেরা এক্সেস পাওয়া যায়নি!");
+                console.error(err);
+            });
+
+        // Peer আইডি তৈরি হলে তা দেখানো
+        peer.on('open', id => {
+            myIdDisplay.innerText = id;
+            myIdDisplay.onclick = () => {
+                navigator.clipboard.writeText(id);
+                alert("ID Copied!");
+            };
+        });
+
+        // কেউ কল করলে রিসিভ করা
+        peer.on('call', call => {
+            call.answer(localStream);
+            call.on('stream', remoteStream => {
+                document.getElementById('remoteVideo').srcObject = remoteStream;
+            });
+        });
+
+        // কেউ চ্যাট কানেকশন পাঠালে রিসিভ করা
+        peer.on('connection', connection => {
+            conn = connection;
+            handleData();
+        });
+
+        // কানেকশন শুরু করার ফাংশন
+        function startConnection() {
+            const remoteId = remoteIdInput.value;
+            if (!remoteId) return alert("বন্ধুর আইডি দিন!");
+
+            // ভিডিও কল করা
+            const call = peer.call(remoteId, localStream);
+            call.on('stream', remoteStream => {
+                document.getElementById('remoteVideo').srcObject = remoteStream;
+            });
+
+            // চ্যাট কানেক্ট করা
+            conn = peer.connect(remoteId);
+            handleData();
+        }
+
+        // মেসেজ আদান-প্রদান হ্যান্ডেল করা
+        function handleData() {
+            conn.on('open', () => {
+                displayMessage("কানেক্টেড!", 'received');
+                conn.on('data', data => {
+                    displayMessage(data, 'received');
+                });
+            });
+        }
+
+        // মেসেজ পাঠানো
+        function sendChatMessage() {
+            const msg = messageInput.value;
+            if (msg && conn && conn.open) {
+                conn.send(msg);
+                displayMessage(msg, 'sent');
+                messageInput.value = "";
+            }
+        }
+
+        // স্ক্রিনে মেসেজ দেখানো
+        function displayMessage(msg, type) {
+            const div = document.createElement('div');
+            div.className = `msg ${type}`;
+            div.innerText = msg;
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Enter চাপলে মেসেজ পাঠানো
+        messageInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") sendChatMessage();
+        });
+    </script>
+</body>
+</html>
