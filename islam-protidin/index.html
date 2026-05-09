@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>ইসলাম প্রতিদিন  - আপনার ইসলামিক সঙ্গী</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #111827;
+            --text-light: #f3f4f6;
+            --accent-gold: #f59e0b;
+            --glass-bg: rgba(31, 41, 55, 0.6);
+        }
+        body { 
+            font-family: 'Hind Siliguri', sans-serif; 
+            user-select: none; 
+            background-color: var(--bg-dark);
+            transition: background-color 0.5s ease;
+        }
+        .font-arabic { font-family: 'Amiri', serif; word-break: break-all; }
+
+        /* Dynamic Background Gradients */
+        .bg-fajr { background: linear-gradient(170deg, #1e3a8a 0%, #312e81 50%, #f97316 100%); }
+        .bg-dhuhr { background: linear-gradient(170deg, #38bdf8 0%, #0ea5e9 100%); }
+        .bg-asr { background: linear-gradient(170deg, #60a5fa 0%, #fb923c 100%); }
+        .bg-maghrib { background: linear-gradient(170deg, #ea580c 0%, #7c2d12 100%); }
+        .bg-isha { background: linear-gradient(170deg, #1e293b 0%, #0f172a 100%); }
+        
+        #hero-header {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            border-bottom-left-radius: 4rem;
+            border-bottom-right-radius: 4rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 20;
+            transition: background-color 0.5s ease, box-shadow 0.5s ease;
+        }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: var(--bg-dark);
+            padding-bottom: 1rem;
+        }
+
+        #bottom-nav {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(243, 244, 246, 0.1);
+            transition: background-color 0.5s ease;
+        }
+        .nav-btn.active { color: var(--accent-gold); }
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(245, 158, 11, 0.4); /* গোল্ডেন স্ট্রোক */
+            border-radius: 1.5rem;
+            transition: background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease, transform 0.5s ease;
+        }
+
+        /* --- Light Theme for Home Page --- */
+        body.light-theme {
+            background-color: #f3f4f6;
+        }
+        .light-theme #app-container {
+            opacity: 0; 
+        }
+        .light-theme #hero-header {
+            background-color: #ffffff;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+        .light-theme #hero-header h1,
+        .light-theme #iftar-sehri-info,
+        .light-theme .text-white {
+            color: #111827;
+        }
+        .light-theme #time-based-greeting,
+        .light-theme #live-clock,
+        .light-theme .text-gray-300,
+        .light-theme .text-gray-400 {
+            color: #4b5563;
+        }
+        .light-theme #current-location {
+            background-color: #e5e7eb;
+            color: #374151;
+            border-color: rgba(0,0,0,0.1);
+        }
+        .light-theme #current-location svg,
+        .light-theme .w-10.h-10.bg-gray-700\/50 {
+            background-color: #e5e7eb;
+            color: #374151;
+            border-color: rgba(0,0,0,0.1);
+        }
+        .light-theme main {
+            color: #1f2937;
+        }
+        .light-theme .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(245, 158, 11, 0.5); /* গোল্ডেন স্ট্রোক */
+        }
+         .light-theme #hadith-content .text-white {
+             color: #374151;
+         }
+        .light-theme #bottom-nav {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        /* --- নতুন অ্যানিমেশন কোড --- */
+        @keyframes pulse-glow {
+          0%, 100% {
+            box-shadow: 0 0 5px rgba(251, 191, 36, 0.4), 0 0 10px rgba(251, 191, 36, 0.3);
+            transform: scale(1);
+          }
+          50% {
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.7), 0 0 30px rgba(251, 191, 36, 0.5);
+            transform: scale(1.02);
+          }
+        }
+        .current-prayer-animation {
+          animation: pulse-glow 2.5s infinite ease-in-out;
+          border-color: #fbbf24 !important; /* Glow ইফেক্টের সাথে মিলানোর জন্য বর্ডার রঙ */
+        }
+    </style>
+</head>
+<body class="max-w-md mx-auto min-h-screen relative overflow-hidden">
+    
+    <div id="app-container" class="absolute inset-0 transition-all duration-1000 bg-isha"></div>
+
+    <div class="relative z-10 h-screen flex flex-col">
+        <div id="loading-screen" class="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center">
+            <div class="w-16 h-16 border-4 border-amber-100 border-t-amber-500 rounded-full animate-spin"></div>
+            <p class="mt-4 font-bold text-slate-800">ইসলাম প্রতিদিন লোড হচ্ছে...</p>
+        </div>
+
+        <div id="main-app-view" class="h-full flex flex-col">
+            <header id="hero-header" class="pt-6 pb-6 px-6 text-center">
+                <div class="flex justify-between items-center mb-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-gray-700/50 rounded-2xl flex items-center justify-center text-white font-bold border border-white/10">LI</div>
+                        <h1 class="font-black text-white leading-none text-xl">ইসলাম প্রতিদিন </h1>
+                    </div>
+                    <div id="current-location" class="text-xs bg-gray-700/50 px-3 py-1.5 rounded-full text-white font-bold flex items-center gap-1 border border-white/10">
+                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path></svg>
+                        <span>লোড...</span>
+                    </div>
+                </div>
+                
+                <p id="time-based-greeting" class="text-sm font-medium text-gray-300">আসসালামু আলাইকুম</p>
+                <p id="iftar-sehri-info" class="text-white font-black text-3xl mt-2 tracking-tight">লোড হচ্ছে...</p>
+                <p id="hijri-date-string" class="mt-2 text-amber-400 font-bold text-lg">লোড হচ্ছে...</p>
+                <p id="live-clock" class="text-center text-sm font-medium text-gray-400 tracking-wider mt-4">০০:০০:০০</p>
+            </header>
+
+            <main class="flex-grow p-5 pb-32 overflow-y-auto text-white">
+                <div id="views-container">
+                    <section id="home" class="tab-content active space-y-4">
+                        <div class="glass-card p-4 space-y-2">
+                            <h3 class="font-bold text-amber-400">আজকের হাদিস</h3>
+                            <div id="hadith-content"><p class="text-gray-300 text-sm">লোড হচ্ছে...</p></div>
+                        </div>
+                        <div class="flex justify-between items-center px-1 pt-4">
+                            <h2 class="text-2xl font-black text-white leading-tight">আজকের সময়সূচী</h2>
+                            <span id="hijri-year-bn" class="text-[10px] font-bold text-gray-300 bg-white/10 px-2 py-0.5 rounded-full uppercase">---</span>
+                        </div>
+                        <div id="prayer-times-list-vertical" class="space-y-2"></div>
+                    </section>
+                     <section id="quran" class="tab-content space-y-4">
+                        <h2 class="sticky-header text-2xl font-black text-white leading-tight px-1">আল-কুরআন</h2>
+                        <div id="surah-list" class="space-y-3"></div>
+                    </section>
+                    <section id="dua" class="tab-content space-y-4">
+                        <h2 class="sticky-header text-2xl font-black text-white leading-tight px-1">দোয়া ও জিকির</h2>
+                        <div id="dua-list" class="space-y-6"></div>
+                    </section>
+                    <section id="names" class="tab-content space-y-4">
+                        <h2 class="sticky-header text-2xl font-black text-white leading-tight px-1">আল্লাহর ৯৯ নাম</h2>
+                         <div id="names-grid" class="grid grid-cols-2 gap-4"></div>
+                    </section>
+                </div>
+            </main>
+        </div>
+        
+        <div id="surah-detail-view" class="h-full flex-col p-5 pb-32 space-y-4 hidden bg-gray-900">
+            <div class="flex justify-between items-center mb-4">
+                 <button onclick="hideSurahDetails()" class="glass-card text-white px-4 py-2 rounded-full font-bold">&larr; পিছনে</button>
+                 <h2 id="surah-detail-title" class="text-xl font-black text-white text-right"></h2>
+            </div>
+            <div id="surah-detail-content" class="space-y-6 flex-grow overflow-y-auto"></div>
+        </div>
+    </div>
+
+    <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto z-50">
+        <div id="quran-player-bar" class="m-4 glass-card p-3 shadow-2xl hidden">
+            <div class="flex items-center gap-3">
+                <div class="flex-1 overflow-hidden">
+                    <p id="playing-surah-name" class="font-bold text-sm truncate">সূরা প্লে হচ্ছে</p>
+                    <p class="text-xs text-gray-300">মিশারী রাশিদ আল-আফাসি</p>
+                </div>
+                <button onclick="toggleAudio()" class="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full text-2xl" id="play-pause-icon">⏸️</button>
+                <button onclick="closeAudio()" class="text-white/40 text-2xl">✕</button>
+            </div>
+        </div>
+        <div class="text-center text-xs text-gray-400 pb-1">Powered by <a href="#" target="_blank" class="font-bold text-gray-300 hover:text-amber-400">ইসলাম প্রতিদিন </a></div>
+        <nav id="bottom-nav" class="grid grid-cols-4 gap-1 px-2 py-3 rounded-t-[2rem] shadow-2xl">
+            <button onclick="switchTab('home')" class="nav-btn active flex flex-col items-center text-gray-400" data-tab="home"><span class="text-2xl">🏠</span><span class="text-[9px] font-black uppercase">হোম</span></button>
+            <button onclick="switchTab('quran')" class="nav-btn flex flex-col items-center text-gray-400" data-tab="quran"><span class="text-2xl">📖</span><span class="text-[9px] font-black uppercase">কুরআন</span></button>
+            <button onclick="switchTab('dua')" class="nav-btn flex flex-col items-center text-gray-400" data-tab="dua"><span class="text-2xl">🤲</span><span class="text-[9px] font-black uppercase">দোয়া</span></button>
+            <button onclick="switchTab('names')" class="nav-btn flex flex-col items-center text-gray-400" data-tab="names"><span class="text-2xl">⭐</span><span class="text-[9px] font-black uppercase">নামসমূহ</span></button>
+        </nav>
+    </div>
+    <audio id="global-audio"></audio>
+
+    <script>
+        let cachedTimings = null;
+        const audio = document.getElementById('global-audio');
+        const HIJRI_MONTHS_BN_BY_NUM = [null, "মুহাররম", "সফর", "রবিউল আউয়াল", "রবিউস সানি", "জমাদিউল আউয়াল", "জমাদিউস সানি", "রজব", "শাবান", "রমজান", "শাওয়াল", "জিলকদ", "জিলহজ্জ"];
+        
+        const DUAS = [
+            {title: "রোজা রাখার নিয়ত", arabic: "نَوَيْتُ اَنْ اُصُوْمَ غَدًا مِّنْ شَهْرِ رَمْضَانَ الْمُبَارَكِ فَرْضَا لَكَ يَا اللهُ فَتَقَبَّل مِنِّى اِنَّكَ اَنْتَ السَّمِيْعُ الْعَلِيْم", pronunciation: "নাওয়াইতু আন আছুমা গদাম মিন শাহরি রমাজানাল মুবারাকি ফারদাল্লাকা ইয়া আল্লাহু ফাতাকাব্বাল মিন্নি ইন্নাকা আনতাস সামিউল আলিম।", meaning: "হে আল্লাহ! আমি আগামীকাল পবিত্র রমজানের তোমার পক্ষ থেকে নির্ধারিত ফরজ রোজা রাখার ইচ্ছা পোষণ (নিয়ত) করলাম। অতএব, তুমি আমার পক্ষ থেকে তা কবুল কর। নিশ্চয়ই তুমি সর্বশ্রোতা ও সর্বজ্ঞানী।"},
+            {title: "ইফতারের দোয়া", arabic: "اللَّهُمَّ اِنِّى لَكَ صُمْتُ وَبِكَ امنْتُ وَعَلَى رِزْقِكَ اَفْطَرْتُ", pronunciation: "আল্লাহুম্মা ইন্নি লাকা ছুমতু ওয়াবিকা আমানতু ওয়া'আলা রিযক্বিকা আফতারতু।", meaning: "হে আল্লাহ! আমি তোমারই সন্তুষ্টির জন্য রোজা রেখেছি এবং তোমারই ওপর ঈমান এনেছি এবং তোমারই দেওয়া রিজিক দ্বারা ইফতার করছি।"},
+            {title: "আয়াতুল কুরসি", arabic: "ٱللَّهُ لَآ إِلَٰهَ إِلَّا هُوَ ٱلْحَىُّ ٱلْقَيُّومُ ۚ لَا تَأْخُذُهُۥ سِنَةٌ وَلَا نَوْمٌ ۚ لَّهُۥ مَا فِى ٱلسَّمَٰوَٰتِ وَمَا فِى ٱلْأَرْضِ ۗ مَن ذَا ٱلَّذِى يَشْفَعُ عِندَهُۥٓ إِلَّا بِإِذْنِهِۦ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَىْءٍ مِّنْ عِلْمِهِۦٓ إِلَّا بِمَا شَآءَ ۚ وَسِعَ كُرْسِيُّهُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضَ ۖ وَلَا يَـُٔودُهُۥ حِفْظُهُمَا ۚ وَهُوَ ٱلْعَلِىُّ ٱلْعَظِيمُ", pronunciation: "আল্লাহু লা ইলাহা ইল্লা হুয়াল হাইয়ুল কাইয়ুম, লা তা’খুযুহু সিনাতুও ওয়ালা নাউম, লাহু মা ফিস সামাওয়াতি ওয়া মা ফিল আরদ, মান যাল্লাযী ইয়াশফাউ ইনদাহু ইল্লা বিইযনিহ, ইয়া’লামু মা বাইনা আইদীহিম ওয়া মা খালফাহুম, ওয়ালা ইউহীতূনা বিশাইইম মিন ইলমিহি ইল্লা বিমা শা-আ, ওয়াসিআ কুরসিইয়্যুহুস সামাওয়াতি ওয়াল আরদ, ওয়ালা ইয়াউদুহু হিফযুহুমা ওয়া হুয়াল আলিয়্যুল আযীম।", meaning: "আল্লাহ, তিনি ছাড়া অন্য কোনো উপাস্য নেই, তিনি চিরঞ্জীব, সবকিছুর ধারক। তাঁকে তন্দ্রা বা নিদ্রা স্পর্শ করে না। নভোমণ্ডল ও ভূমণ্ডলে যা কিছু রয়েছে, সবই তাঁর। কে আছে এমন, যে সুপারিশ করবে তাঁর কাছে তাঁর অনুমতি ছাড়া? দৃষ্টির সামনে কিংবা পিছনে যা কিছু রয়েছে, সবই তিনি জানেন। তাঁর জ্ঞানসীমা থেকে তারা কোনো কিছুকেই পরিবেষ্টিত করতে পারে না, কিন্তু যতটুকু তিনি ইচ্ছা করেন। তাঁর আসন সমস্ত আসমান ও যমীনকে পরিবেষ্টিত করে আছে। আর সেগুলোকে ধারণ করা তাঁর পক্ষে কঠিন নয়। তিনিই সর্বোচ্চ এবং সর্বাপেক্ষা মহান।"},
+            {title: "সাইয়্যিদুল ইস্তিগফার", arabic: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ لَكَ بِذَنْبِي فَاغْفِرْ لِي، فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ", pronunciation: "আল্লাহুম্মা আনতা রাব্বি লা ইলাহা ইল্লা আনতা, খালাকতানি ওয়া আনা আবদুকা, ওয়া আনা ‘আলা ‘আহদিকা ওয়া ওয়া‘দিকা মাসতাতা‘তু, আ‘উযু বিকা মিন শাররি মা সানা‘তু, আবুউ লাকা বিনি‘মাতিকা ‘আলাইয়্যা, ওয়া আবুউ বিকা বিযাম্বী, ফাগফির লী, ফাইন্নাহু লা ইয়াগফিরুয যুনুবা ইল্লা আনতা।", meaning: "হে আল্লাহ! আপনি আমার প্রতিপালক। আপনি ছাড়া কোনো উপাস্য নেই। আপনি আমাকে সৃষ্টি করেছেন এবং আমি আপনার বান্দা। আমি আমার সাধ্য মতো আপনার (কাছে দেওয়া) অঙ্গীকার ও প্রতিশ্রুতির ওপর দৃঢ় থাকব। আমি আমার কৃতকর্মের অনিষ্ট থেকে আপনার আশ্রয় চাই। আমার ওপর আপনার অনুগ্রহকে আমি স্বীকার করি এবং আমার পাপকেও স্বীকার করি। অতএব, আপনি আমাকে ক্ষমা করুন। निश्चय, আপনি ছাড়া আর কেউ পাপ ক্ষমা করতে পারে না।"},
+            {title: "জ্ঞান বৃদ্ধির দোয়া", arabic: "رَّبِّ زِدْنِي عِلْمًا", pronunciation: "রব্বি যিদনী ইলমা।", meaning: "হে আমার প্রতিপালক! আমার জ্ঞান বৃদ্ধি করে দিন।"},
+            {title: "পিতা-মাতার জন্য দোয়া", arabic: "رَّبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا", pronunciation: "রব্বির হামহুমা কামা রব্বায়ানি সগিরা।", meaning: "হে আমার প্রতিপালক! তাদের উভয়ের প্রতি রহম করুন, যেমন তারা আমাকে শৈশবে দয়াসহকারে লালন-পালন করেছেন।"},
+            {title: "যানবাহনে ভ্রমণের দোয়া", arabic: "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَٰذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ وَإِنَّا إِلَىٰ رَبِّنَا لَمُنقَلِبُونَ", pronunciation: "সুবহানাল্লাজি সাখখারা লানা হা-যা ওয়া মা কুন্না লাহু মুক্বরিনীন। ওয়া ইন্না ইলা রব্বিনা লামুনক্বালিবুন।", meaning: "পবিত্র সেই সত্তা যিনি এটিকে আমাদের বশীভূত করে দিয়েছেন, যদিও আমরা সমর্থ ছিলাম না একে বশীভূত করতে। আর আমরা অবশ্যই আমাদের প্রভুর দিকে প্রত্যাবর্তনকারী।"},
+            {title: "ঘুমানোর দোয়া", arabic: "اَللّهُمَّ بِاسْمِكَ أَمُوْتُ وَأَحْيَا", pronunciation: "আল্লাহুম্মা বিসমিকা আমুতু ওয়া আহইয়া।", meaning: "হে আল্লাহ! আমি তোমারই নামে মৃত্যুবরণ করি এবং তোমারই নামে জীবিত হই।"},
+            {title: "ঘুম থেকে ওঠার দোয়া", arabic: "اَلْحَمْدُ لِلّهِ الَّذِى أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُوْرُ", pronunciation: "আলহামদু লিল্লা হিল্লাজি আহইয়ানা বা'দা মা আমাতানা ওয়া ইলাইহিন নুশুর।", meaning: "সমস্ত প্রশংসা সেই আল্লাহর জন্য, যিনি আমাদেরকে মৃত্যুর পর জীবন দান করেছেন এবং তাঁরই দিকে আমাদের পুনরুত্থান।"},
+            {title: "ঘরে প্রবেশের দোয়া", arabic: "اَللّهُمَّ إِنِّيْ أَسْأَلُكَ خَيْرَ الْمَوْلِجِ وَخَيْرَ الْمَخْرَجِ بِسْمِ اللهِ وَلَجْنَا وَبِسْمِ اللهِ خَرَجْنَا وَعَلَى اللهِ رَبِّنَا تَوَكَّلْنَا", pronunciation: "আল্লাহুম্মা ইন্নী আস'আলুকা খাইরাল মাওলিজি ওয়া খাইরাল মাখরাজি, বিসমিল্লাহি ওয়ালাজনা ওয়া বিসমিল্লাহি খারাজনা ওয়া আলাল্লাহি রাব্বিনা তাওয়াক্কালনা।", meaning: "হে আল্লাহ! আমি আপনার কাছে ঘরে প্রবেশ ও ঘর থেকে বের হওয়ার কল্যাণ প্রার্থনা করছি। আমরা আল্লাহর নামে প্রবেশ করছি এবং আল্লাহর নামে বের হচ্ছি এবং আমাদের প্রতিপালক আল্লাহর ওপরই আমরা ভরসা করছি।"},
+            {title: "খাবার গ্রহণের দোয়া", arabic: "بِسْمِ اللهِ وَعَلَى بَرَكَةِ اللهِ", pronunciation: "বিসমিল্লাহি ওয়া ‘আলা বারাকাতিল্লাহ।", meaning: "আল্লাহর নামে এবং আল্লাহর বরকতের উপর (আমি খাওয়া শুরু করছি)।"}
+        ];
+        const ALLAH_NAMES = [
+            {ar:"الرحمن",bn:"আর-রহমান",meaning:"পরম দয়ালু"},{ar:"الرحيم",bn:"আর-রহীম",meaning:"অতিশয় মেহেরবান"},{ar:"الملك",bn:"আল-মালিক",meaning:"সর্বাধিকারী"},{ar:"القدوس",bn:"আল-কুদ্দুস",meaning:"নিষ্পাপ"},{ar:"السلام",bn:"আস-সাلام",meaning:"শান্তিদাতা"},{ar:"المؤمن",bn:"আল-মু’মিন",meaning:"নিরাপত্তাদাতা"},{ar:"المهيمن",bn:"আল-মুহাইমিন",meaning:"রক্ষাকর্তা"},{ar:"العزيز",bn:"আল-আজিজ",meaning:"সর্বশক্তিমান"},{ar:"الجبار",bn:"আল-জাব্বার",meaning:"মহাপ্রতাপশালী"},{ar:"المتكبر",bn:"আল-মুতাকাব্বির",meaning:"অহংকারী"},{ar:"الخالق",bn:"আল-খালিক",meaning:"সৃষ্টিকর্তা"},{ar:"البارئ",bn:"আল-বারি",meaning:"উদ্ভাবনকর্তা"},{ar:"المصور",bn:"আল-মুসাওবির",meaning:"আকৃতিদানকারী"},{ar:"الغفار",bn:"আল-গাফফার",meaning:"ক্ষমাশীল"},{ar:"القهار",bn:"আল-কাহহার",meaning:"মহাপরাক্রমশালী"},{ar:"الوهاب",bn:"আল-ওয়াহহাব",meaning:"মহাদাতা"},{ar:"الرزاق",bn:"আর-রাজ্জাক",meaning:"রিজিকদাতা"},{ar:"الفتاح",bn:"আল-ফাত্তাহ",meaning:"উন্মোচনকারী"},{ar:"العليم",bn:"আল-আলিম",meaning:"সর্বজ্ঞ"},{ar:"القابض",bn:"আল-কাবিদ",meaning:"সংকোচনকারী"},{ar:"الباسط",bn:"আল-বাসিত",meaning:"সম্প্রসারণকারী"},{ar:"الخافض",bn:"আল-খাফিদ",meaning:"অবনতকারী"},{ar:"الرافع",bn:"আর-রাফি",meaning:"উন্নতকারী"},{ar:"المعز",bn:"আল-মুইয",meaning:"সম্মানদাতা"},{ar:"المذل",bn:"আল-মুযিল",meaning:"অপমানকারী"},{ar:"السميع",bn:"আস-সামি",meaning:"সর্বশ্রোতা"},{ar:"البصير",bn:"আল-বাসির",meaning:"সর্বদ্রষ্টা"},{ar:"الحكم",bn:"আল-হাকাম",meaning:"বিচারক"},{ar:"العدل",bn:"আল-আদল",meaning:"ন্যায়পরায়ণ"},{ar:"اللطيف",bn:"আল-লাতিফ",meaning:"সূক্ষ্মদর্শী"},{ar:"الخبير",bn:"আল-খবির",meaning:"সর্বজ্ঞ"},{ar:"الحليم",bn:"আল-হালিম",meaning:"সহনশীল"},{ar:"العظيم",bn:"আল-আযিম",meaning:"মহান"},{ar:"الغفور",bn:"আল-গফুর",meaning:"ক্ষমাশীল"},{ar:"الشكور",bn:"আশ-শাকুর",meaning:"গুণগ্রাহী"},{ar:"العلي",bn:"আল-আলি",meaning:"মহীয়ান"},{ar:"الكبير",bn:"আল-কাবির",meaning:"সর্বশ্রেষ্ঠ"},{ar:"الحفيظ",bn:"আল-হাফিজ",meaning:"মহারক্ষক"},{ar:"المقيت",bn:"আল-মুকিত",meaning:"শক্তিদাতা"},{ar:"الحسيب",bn:"আল-হাসিব",meaning:"হিসাব গ্রহণকারী"},{ar:"الجليل",bn:"আল-জালিল",meaning:"মহিমান্বিত"},{ar:"الكريم",bn:"আল-কারিম",meaning:"অনুগ্রহশীল"},{ar:"الرقيب",bn:"আর-রকিব",meaning:"তত্ত্বাবধায়ক"},{ar:"المجيب",bn:"আল-মুজীব",meaning:"কবুলকারী"},{ar:"الواسع",bn:"আল-ওয়াসি",meaning:"সর্বব্যাপী"},{ar:"الحكيم",bn:"আল-হাকিম",meaning:"প্রজ্ঞাময়"},{ar:"الودود",bn:"আল-ওয়াদুদ",meaning:"প্রেমময়"},{ar:"المجيد",bn:"আল-মাজিদ",meaning:"গৌরবময়"},{ar:"الباعث",bn:"আল-বাইছ",meaning:"পুনরুত্থানকারী"},{ar:"الشهيد",bn:"আশ-শাহিদ",meaning:"সর্বদর্শী"},{ar:"الحق",bn:"আল-হক",meaning:"সত্য"},{ar:"الوكيل",bn:"আল-ওয়াকিল",meaning:"কর্ম সম্পাদনকারী"},{ar:"القوي",bn:"আল-কাউয়ি",meaning:" শক্তিশালী"},{ar:"المتين",bn:"আল-মাতিন",meaning:"সুদৃঢ়"},{ar:"الولي",bn:"আল-ওয়ালি",meaning:"অভিভাবক"},{ar:"الحميد",bn:"আল-হামিদ",meaning:"প্রশংসিত"},{ar:"المحصي",bn:"আল-মুহসি",meaning:"হিসাবকারী"},{ar:"المبدئ",bn:"আল-মুবদি",meaning:"সূচনাকারী"},{ar:"المعيد",bn:"আল-মুঈদ",meaning:"পুনঃসৃষ্টিকারী"},{ar:"المحيي",bn:"আল-মুহয়ি",meaning:"জীবনদানকারী"},{ar:"المميت",bn:"আল-মুমিত",meaning:"মৃত্যুদানকারী"},{ar:"الحي",bn:"আল-হাই",meaning:"চিরঞ্জীব"},{ar:"القيوم",bn:"আল-কাইয়ুম",meaning:"স্বয়ংস্থিতিশীল"},{ar:"الواجد",bn:"আল-ওয়াজিদ",meaning:"অমুখাপেক্ষী"},{ar:"الماجد",bn:"আল-মাজিদ",meaning:"মহিমান্বিত"},{ar:"الواحد",bn:"আল-ওয়াহিদ",meaning:"একক"},{ar:"الصمد",bn:"আস-সামাদ",meaning:"অমুখাপেক্ষী"},{ar:"القادر",bn:"আল-কাদির",meaning:"শক্তিমান"},{ar:"المقتدر",bn:"আল-মুকতাদির",meaning:"প্রভাবশালী"},{ar:"المقدم",bn:"আল-মুকাদ্দিম",meaning:"অগ্রবর্তীকারী"},{ar:"المؤخر",bn:"আল-মুআখখির",meaning:"বিলম্বকারী"},{ar:"الأول",bn:"আল-আউয়াল",meaning:"অনাদি"},{ar:"الآخر",bn:"আল-আখির",meaning:"অনন্ত"},{ar:"الظاهر",bn:"আয-যাহির",meaning:"প্রকাশ্য"},{ar:"الباطن",bn:"আল-বাতিন",meaning:"গোপন"},{ar:"الوالي",bn:"আল-ওয়ালি",meaning:"কার্যনির্বাহক"},{ar:"المتعالي",bn:"আল-মুতাআলি",meaning:"সর্বোচ্চ"},{ar:"البر",bn:"আল-বার",meaning:"কল্যাণময়"},{ar:"التواب",bn:"আত-তাওয়াব",meaning:"তওবা কবুলকারী"},{ar:"المنتقم",bn:"আল-মুনতাকিম",meaning:"প্রতিশোধ গ্রহণকারী"},{ar:"العفو",bn:"আল-আফু",meaning:"ক্ষমাকারী"},{ar:"الرءوف",bn:"আর-রউফ",meaning:"স্নেহশীল"},{ar:"مالك الملك",bn:"মালিকুল-মুলক",meaning:"সর্বভৌম ক্ষমতার অধিকারী"},{ar:"ذو الجلال والإكرام",bn:"যুল-জালালি-ওয়াল-ইকরাম",meaning:"মহিমান্বিত ও মহানুভব"},{ar:"المقسط",bn:"আল-মুকসিত",meaning:"ন্যায়পরায়ণ"},{ar:"الجامع",bn:"আল-জামি",meaning:"একত্রকারী"},{ar:"الغني",bn:"আল-গানি",meaning:"ঐশ্বর্যবান"},{ar:"المغني",bn:"আল-মুগনি",meaning:"ঐশ্বর্যদানকারী"},{ar:"المانع",bn:"আল-মানি",meaning:"প্রতিরোধকারী"},{ar:"الضار",bn:"আদ-দার",meaning:"ক্ষতিকর"},{ar:"النافع",bn:"আন-নাফি",meaning:"কল্যাণকারী"},{ar:"النور",bn:"আন-নূর",meaning:"জ্যোতি"},{ar:"الهادي",bn:"আল-হাদি",meaning:"পথপ্রদর্শক"},{ar:"البديع",bn:"আল-বাদি",meaning:"অনন্য স্রষ্টা"},{ar:"الباقي",bn:"আল-বাকি",meaning:"চিরস্থায়ী"},{ar:"الوارث",bn:"আল-ওয়ারিস",meaning:"উত্তরাধিকারী"},{ar:"الرشيد",bn:"আর-রশিদ",meaning:"সৎপথ প্রদর্শনকারী"},{ar:"الصبور",bn:"আস-সবুর",meaning:"ধৈর্যশীল"},
+        ];
+        const HADITHS = [
+            { text: "তোমাদের মধ্যে সর্বোত্তম সে ব্যক্তি, যে কুরআন শিখে এবং অন্যকে তা শিক্ষা দেয়।", ref: "সহিহ বুখারি, ৫০২৭"},
+            { text: "আল্লাহর নিকট সবচেয়ে প্রিয় কাজ হলো সেটি যা নিয়মিত করা হয়, যদিও তা পরিমাণে কম হয়।", ref: "সহিহ বুখারি, ৬৪৬৪"},
+            { text: "কর্মের ফলাফল নিয়তের উপর নির্ভরশীল।", ref: "সহিহ বুখারি, ১"},
+            { text: "দান করলে সম্পদ কমে না।", ref: "সহিহ মুসলিম, ২৫৮৮"},
+            { text: "যে ব্যক্তি জ্ঞানের সন্ধানে কোনো পথ অবলম্বন করে, আল্লাহ তার জন্য জান্নাতের পথ সহজ করে দেন।", ref: "সহিহ মুসলিম, ২৬৯৯"},
+            { text: "যে ব্যক্তি রমজান মাসে ঈমানের সাথে ও সওয়াবের আশায় রোজা রাখে, তার পূর্বের সকল (সগিরা) গুনাহ ক্ষমা করে দেওয়া হয়।", ref: "সহিহ বুখারি, ৩৮"},
+            { text: "পরিষ্কার-পরিচ্ছন্নতা ঈমানের অর্ধেক।", ref: "সহিহ মুসলিম, ২২৩"},
+            { text: "তোমার ভাইয়ের দিকে তাকিয়ে মুচকি হাসাও একটি সাদাকা।", ref: "জামে তিরমিজি, ১৯৫৬"}
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            getLocation();
+            startLiveClock();
+            updateGreeting();
+            renderDuas();
+            renderNames();
+            fetchSurahList();
+            renderDailyHadith();
+            setupAudioPlayer();
+            switchTab('home'); 
+            setInterval(updateTimeBasedUI, 60000); // প্রতি মিনিটে থিম ও অ্যানিমেশন চেক করবে
+            setTimeout(() => { document.getElementById('loading-screen').style.display = 'none'; }, 1500);
+        });
+        
+        function toBengaliNumerals(str) {
+            const en_to_bn = {'0': '০', '1': '১', '2': '২', '3': '৩', '4': '৪', '5': '৫', '6': '৬', '7': '৭', '8': '৮', '9': '৯'};
+            return String(str).replace(/[0-9]/g, (match) => en_to_bn[match]);
+        }
+
+        function updateGreeting() {
+            const el = document.getElementById('time-based-greeting');
+            const hour = new Date().getHours();
+            let greeting = ", ";
+            if (hour >= 4 && hour < 12) greeting += "শুভ সকাল";
+            else if (hour >= 12 && hour < 17) greeting += "শুভ বিকাল";
+            else if (hour >= 17 && hour < 20) greeting += "শুভ সন্ধ্যা";
+            else greeting += "শুভ রাত্রি";
+            el.innerText = `আসসালামু আলাইকুম${greeting}`;
+        }
+
+        function startLiveClock() {
+            const el = document.getElementById('live-clock');
+            setInterval(() => { el.innerText = toBengaliNumerals(new Date().toLocaleTimeString('en-GB')); }, 1000);
+        }
+
+        function getLocation() {
+            navigator.geolocation?.getCurrentPosition(
+                pos => fetchPrayerTimes(pos.coords.latitude, pos.coords.longitude),
+                () => fetchPrayerTimes(23.8103, 90.4125, true) // ফলব্যাক হিসেবে ঢাকা
+            );
+        }
+
+        async function fetchPrayerTimes(lat, lng, isDefault = false) {
+            // *** নতুন কোড: লোকেশনের নাম দেখানো ***
+            if (isDefault) {
+                document.querySelector('#current-location span').innerText = 'ঢাকা (ডিফল্ট)';
+            } else {
+                try {
+                    const geoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=bn`);
+                    if (!geoRes.ok) throw new Error('Reverse geocoding failed');
+                    const geoData = await geoRes.json();
+                    const locationName = geoData.city || geoData.locality || 'আপনার অবস্থান';
+                    document.querySelector('#current-location span').innerText = locationName;
+                } catch (geoError) {
+                    console.error("Geolocation name error:", geoError);
+                    document.querySelector('#current-location span').innerText = 'আপনার অবস্থান';
+                }
+            }
+
+            // *** বাকি কোড আগের মতোই ***
+            try {
+                const timingsRes = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=2`);
+                if (!timingsRes.ok) throw new Error('Prayer Times API request failed');
+                const timingsData = await timingsRes.json();
+
+                cachedTimings = timingsData.data.timings;
+                const gregorianDateStr = timingsData.data.date.gregorian.date; 
+
+                const [day, month, year] = gregorianDateStr.split('-').map(Number);
+                const today = new Date(year, month - 1, day);
+
+                const yesterday = new Date(today);
+                yesterday.setDate(today.getDate() - 1); 
+
+                const yesterdayFormatted = `${String(yesterday.getDate()).padStart(2, '0')}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${yesterday.getFullYear()}`;
+
+                const hijriRes = await fetch(`https://api.aladhan.com/v1/gToH?date=${yesterdayFormatted}`);
+                if (!hijriRes.ok) throw new Error('Hijri Conversion API request failed');
+                const hijriData = await hijriRes.json();
+                const adjustedHijri = hijriData.data.hijri;
+
+                renderVerticalPrayerTimes(cachedTimings);
+                renderHijri(adjustedHijri);
+                startIftarSehriCountdown();
+                updateTimeBasedUI();
+                highlightCurrentPrayer();
+
+            } catch (e) {
+                console.error("API Error:", e);
+                document.getElementById('iftar-sehri-info').innerText = 'সময়সূচী লোড হয়নি';
+                document.getElementById('hijri-date-string').innerText = 'নেটওয়ার্ক সংযোগ চেক করুন';
+            }
+        }
+
+        function parseTime(timeStr) {
+            const [h, m] = timeStr.split(':');
+            const date = new Date();
+            date.setHours(parseInt(h, 10), parseInt(m, 10), 0, 0);
+            return date;
+        }
+
+        function renderVerticalPrayerTimes(times) {
+            const container = document.getElementById('prayer-times-list-vertical');
+            if (!container) return;
+            const prayerList = [
+                {n: 'সেহরির শেষ সময়', t: times.Imsak, i: '🌙', key: 'Imsak'}, {n: 'ফজর', t: times.Fajr, i: '🌅', key: 'Fajr'},
+                {n: 'সূর্যোদয়', t: times.Sunrise, i: '🔆', key: 'Sunrise'}, {n: 'যোহর', t: times.Dhuhr, i: '☀️', key: 'Dhuhr'},
+                {n: 'আসর', t: times.Asr, i: '🌤️', key: 'Asr'}, {n: 'ইফতার', t: times.Maghrib, i: '🌇', key: 'Maghrib'},
+                {n: 'এশা', t: times.Isha, i: '🌃', key: 'Isha'}
+            ];
+            container.innerHTML = prayerList.map(p => {
+                const isSpecial = p.n.includes('সেহরি') || p.n.includes('ইফতার');
+                return `<div id="prayer-${p.key}" class="glass-card p-3 flex items-center gap-4 ${isSpecial ? 'border-amber-400/50' : ''}">
+                    <span class="text-2xl">${p.i}</span>
+                    <div class="flex-1"><span class="font-bold">${p.n}</span></div>
+                    <span class="text-sm font-black text-amber-400 font-mono">${convertTo12H(p.t)}</span>
+                </div>`;
+            }).join('');
+        }
+        
+        function updateTimeBasedUI() {
+            if (!cachedTimings) return;
+            const now = new Date();
+            const container = document.getElementById('app-container');
+            const body = document.body;
+            const times = {
+                fajr: parseTime(cachedTimings.Fajr), sunrise: parseTime(cachedTimings.Sunrise),
+                dhuhr: parseTime(cachedTimings.Dhuhr), asr: parseTime(cachedTimings.Asr),
+                maghrib: parseTime(cachedTimings.Maghrib), isha: parseTime(cachedTimings.Isha)
+            };
+
+            let bgClass = 'bg-isha';
+            if (now >= times.fajr && now < times.sunrise) bgClass = 'bg-fajr';
+            else if (now >= times.sunrise && now < times.dhuhr) bgClass = 'bg-dhuhr';
+            else if (now >= times.dhuhr && now < times.asr) bgClass = 'bg-dhuhr';
+            else if (now >= times.asr && now < times.maghrib) bgClass = 'bg-asr';
+            else if (now >= times.maghrib && now < times.isha) bgClass = 'bg-maghrib';
+            container.className = 'absolute inset-0 transition-all duration-1000 ' + bgClass;
+
+            const isHomeActive = document.getElementById('home').classList.contains('active');
+            if (isHomeActive) {
+                if (now >= times.sunrise && now < times.maghrib) {
+                    body.classList.add('light-theme');
+                } else { 
+                    body.classList.remove('light-theme');
+                }
+            }
+            highlightCurrentPrayer();
+        }
+
+        function highlightCurrentPrayer() {
+            if (!cachedTimings) return;
+
+            document.querySelectorAll('#prayer-times-list-vertical > div').forEach(div => {
+                div.classList.remove('current-prayer-animation');
+            });
+
+            const now = new Date();
+            const times = {
+                fajr: parseTime(cachedTimings.Fajr), sunrise: parseTime(cachedTimings.Sunrise),
+                dhuhr: parseTime(cachedTimings.Dhuhr), asr: parseTime(cachedTimings.Asr),
+                maghrib: parseTime(cachedTimings.Maghrib), isha: parseTime(cachedTimings.Isha)
+            };
+
+            let currentPrayerId = null;
+
+            if (now >= times.fajr && now < times.sunrise) currentPrayerId = 'prayer-Fajr';
+            else if (now >= times.dhuhr && now < times.asr) currentPrayerId = 'prayer-Dhuhr';
+            else if (now >= times.asr && now < times.maghrib) currentPrayerId = 'prayer-Asr';
+            else if (now >= times.maghrib && now < times.isha) currentPrayerId = 'prayer-Maghrib';
+            else if (now >= times.isha || now < times.fajr) currentPrayerId = 'prayer-Isha';
+
+            if (currentPrayerId) {
+                const currentPrayerEl = document.getElementById(currentPrayerId);
+                if (currentPrayerEl) {
+                    currentPrayerEl.classList.add('current-prayer-animation');
+                }
+            }
+        }
+
+        function renderHijri(hijri) {
+            const monthName = HIJRI_MONTHS_BN_BY_NUM[parseInt(hijri.month.number, 10)] || '';
+            const dayBn = toBengaliNumerals(hijri.day);
+            const yearBn = toBengaliNumerals(hijri.year);
+            document.getElementById('hijri-date-string').innerText = `আজ ${dayBn} ${monthName}, ${yearBn} হিজরি`;
+            document.getElementById('hijri-year-bn').innerText = `${yearBn} হিজরি`;
+        }
+        
+        function startIftarSehriCountdown() {
+            if (!cachedTimings) return;
+            const infoEl = document.getElementById('iftar-sehri-info');
+            const sehriTime = parseTime(cachedTimings.Imsak);
+            const iftarTime = parseTime(cachedTimings.Maghrib);
+            const update = () => {
+                const now = new Date();
+                let targetTime, targetLabel;
+                if (now < sehriTime) { targetTime = sehriTime; targetLabel = "সেহরির বাকি"; } 
+                else if (now < iftarTime) { targetTime = iftarTime; targetLabel = "ইফতারের বাকি"; }
+                else { targetTime = new Date(sehriTime.getTime() + 24 * 60 * 60 * 1000); targetLabel = "আগামীকাল সেহরির বাকি"; }
+                const diff = targetTime - now;
+                const hours = Math.floor(diff / 3600000);
+                const minutes = Math.floor((diff % 3600000) / 60000);
+                infoEl.innerText = `${targetLabel}: ${toBengaliNumerals(hours)} ঘণ্টা ${toBengaliNumerals(minutes)} মি.`;
+            };
+            update(); setInterval(update, 30000);
+        }
+
+        function convertTo12H(time) {
+            if (!time) return "--:--";
+            let [h, m] = time.split(':');
+            const ampm = h >= 12 ? 'পি.এম.' : 'এ.এম.';
+            h = h % 12 || 12;
+            return toBengaliNumerals(`${String(h).padStart(2, '0')}:${m}`) + ` ${ampm}`;
+        }
+        
+        function switchTab(tabId) {
+            hideSurahDetails();
+            const header = document.getElementById('hero-header');
+            const body = document.body;
+            
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId)?.classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.tab === tabId);
+            });
+
+            if (tabId === 'home') {
+                header.style.display = 'block';
+                updateTimeBasedUI();
+            } else {
+                header.style.display = 'none';
+                body.classList.remove('light-theme');
+            }
+        }
+
+        async function fetchSurahList() {
+            try {
+                const res = await fetch('https://api.alquran.cloud/v1/surah');
+                if (!res.ok) throw new Error('API request failed');
+                const data = await res.json();
+                document.getElementById('surah-list').innerHTML = data.data.map(s => `
+                    <div class="glass-card p-4 flex items-center gap-3">
+                        <div class="w-10 h-10 bg-gray-900/50 text-amber-400 rounded-xl flex items-center justify-center font-bold">${toBengaliNumerals(s.number)}</div>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="font-bold text-white truncate">${s.englishName}</h4>
+                            <p class="text-sm text-gray-300">${s.name}</p>
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-2">
+                            <button onclick="showSurahDetails(${s.number}, '${s.englishName}')" class="bg-amber-500/20 text-amber-300 px-3 py-1 rounded-lg text-xs font-bold">পড়ুন</button>
+                            <button onclick="playSurah(${s.number}, '${s.englishName}')" class="bg-gray-500/20 text-gray-300 px-3 py-1 rounded-lg text-xs font-bold">শুনুন</button>
+                        </div>
+                    </div>`).join('');
+            } catch (e) { document.getElementById('surah-list').innerHTML = `<p class="text-center text-red-400">সূরা তালিকা লোড করা যায়নি।</p>`; }
+        }
+
+        async function showSurahDetails(surahNumber, surahName) {
+            document.getElementById('main-app-view').classList.add('hidden');
+            const detailView = document.getElementById('surah-detail-view');
+            detailView.classList.remove('hidden'); detailView.classList.add('flex');
+            window.scrollTo(0,0);
+            
+            const titleEl = document.getElementById('surah-detail-title');
+            const contentEl = document.getElementById('surah-detail-content');
+            titleEl.innerText = surahName;
+            contentEl.innerHTML = '<p class="text-center font-bold text-lg text-white">লোড হচ্ছে...</p>';
+            try {
+                const res = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/editions/quran-uthmani,bn.bengali`);
+                if (!res.ok) throw new Error('API request failed');
+                const data = await res.json();
+                contentEl.innerHTML = data.data[0].ayahs.map((ayah, index) => `
+                    <div class="glass-card p-4">
+                        <p class="text-right text-2xl font-arabic text-white leading-loose">${ayah.text} <span class="text-sm font-bold text-amber-400">(${toBengaliNumerals(ayah.numberInSurah)})</span></p>
+                        <p class="text-gray-300 font-medium mt-3">${data.data[1].ayahs[index].text}</p>
+                    </div>`).join('');
+            } catch(e) { contentEl.innerHTML = `<p class="text-center text-red-400">এই সূরাটি লোড করা সম্ভব হয়নি।</p>`; }
+        }
+
+        function hideSurahDetails() {
+            document.getElementById('surah-detail-view').classList.add('hidden');
+            document.getElementById('main-app-view').classList.remove('hidden');
+        }
+
+        function setupAudioPlayer() { audio.onended = () => closeAudio(); }
+
+        function playSurah(number, name) {
+            audio.src = `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${number}.mp3`;
+            audio.play().catch(e => console.error("Audio Play Error:", e));
+            document.getElementById('quran-player-bar').classList.remove('hidden');
+            document.getElementById('playing-surah-name').innerText = `সূরা ${name}`;
+            document.getElementById('play-pause-icon').innerText = '⏸️';
+        }
+
+        function toggleAudio() { 
+            const icon = document.getElementById('play-pause-icon');
+            if (audio.paused) { audio.play(); icon.innerText = '⏸️'; } 
+            else { audio.pause(); icon.innerText = '▶️'; }
+        }
+
+        function closeAudio() { 
+            audio.pause(); audio.src = '';
+            document.getElementById('quran-player-bar').classList.add('hidden');
+        }
+        
+        function renderDailyHadith() {
+            const container = document.getElementById('hadith-content');
+            const hadith = HADITHS[Math.floor(Math.random() * HADITHS.length)];
+            container.innerHTML = `<p class="text-white text-base">“${hadith.text}”</p><p class="text-xs text-amber-400 font-bold mt-2 text-right">${hadith.ref}</p>`;
+        }
+
+        function renderDuas() {
+             document.getElementById('dua-list').innerHTML = DUAS.map(d => `
+                <div class="glass-card p-6 space-y-4">
+                    <h4 class="font-black text-amber-400 text-lg">${d.title}</h4>
+                    <p class="text-2xl text-right font-arabic text-white leading-relaxed">${d.arabic}</p>
+                    <p class="text-sm text-gray-300"><b>উচ্চারণ:</b> ${d.pronunciation}</p>
+                    <p class="text-sm text-gray-300"><b>অর্থ:</b> ${d.meaning}</p>
+                </div>`).join('');
+        }
+
+        function renderNames() {
+            document.getElementById('names-grid').innerHTML = ALLAH_NAMES.map(n => `
+                <div class="glass-card p-4 flex flex-col items-center text-center">
+                    <p class="text-2xl font-arabic text-amber-400">${n.ar}</p>
+                    <h4 class="font-bold text-white">${n.bn}</h4>
+                    <p class="text-xs text-gray-400">${n.meaning}</p>
+                </div>`).join('');
+        }
+    </script>
+</body>
+</html>
