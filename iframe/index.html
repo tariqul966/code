@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic iFrame Viewer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* পুরো বডিকে Flexbox করা হয়েছে যেন ন্যাভবার এবং আইফ্রেম নিখুঁতভাবে ফিট হয় */
+        body, html {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+        }
+
+        /* --- Header Navbar Styles --- */
+        .navbar {
+            background-color: #1e293b; /* ডার্ক থিম */
+            color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #38bdf8; /* স্কাই ব্লু কালার */
+            text-decoration: none;
+        }
+
+        .navbar ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .navbar ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .navbar ul li a:hover {
+            color: #38bdf8;
+        }
+
+        /* --- Content & iFrame Styles --- */
+        .content-area {
+            flex: 1; /* বাকি সবটুকু জায়গা আইফ্রেম নিয়ে নেবে */
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        #error-message {
+            display: none;
+            padding: 40px 20px;
+            text-align: center;
+            color: #ef4444;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="#" class="logo">iFrame Viewer</a>
+        <nav>
+            <ul>
+                <li><a href="?url=google.com">Google</a></li>
+                <li><a href="?url=wikipedia.org">Wikipedia</a></li>
+                <li><a href="?url=bing.com">Bing</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="content-area">
+        <div id="error-message">দয়া করে URL-এ সঠিক ডোমেইন নাম দিন। যেমন: ?url=https://example.com</div>
+        <iframe id="myIframe" src="" allowfullscreen></iframe>
+    </main>
+
+    <script>
+        // URL থেকে 'url' প্যারামিটারটি খুঁজে বের করার ফাংশন
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // পেজ লোড হওয়ার পর রান হবে
+        window.onload = function() {
+            let targetUrl = getQueryParam('url');
+            const iframe = document.getElementById('myIframe');
+            const errorDiv = document.getElementById('error-message');
+
+            if (targetUrl) {
+                // যদি ইউজার https:// বা http:// না লেখে, তবে সেটি নিজে থেকে যোগ করে নেবে
+                if (!/^https?:\/\//i.test(targetUrl)) {
+                    targetUrl = 'https://' + targetUrl;
+                }
+                
+                // iFrame-এর src পরিবর্তন করা হচ্ছে
+                iframe.src = targetUrl;
+            } else {
+                // যদি কোনো URL না দেওয়া থাকে
+                iframe.style.display = 'none';
+                errorDiv.style.display = 'block';
+            }
+        };
+    </script>
+
+</body>
+</html>

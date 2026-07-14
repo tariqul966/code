@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic iFrame Viewer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        #error-message {
+            display: none;
+            padding: 20px;
+            text-align: center;
+            color: red;
+            font-size: 18px;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="error-message">দয়া করে URL-এ সঠিক ডোমেইন নাম দিন। যেমন: ?url=https://example.com</div>
+    <iframe id="myIframe" src="" allowfullscreen></iframe>
+
+    <script>
+        // URL থেকে 'url' প্যারামিটারটি খুঁজে বের করার ফাংশন
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // পেজ লোড হওয়ার পর রান হবে
+        window.onload = function() {
+            let targetUrl = getQueryParam('url');
+            const iframe = document.getElementById('myIframe');
+            const errorDiv = document.getElementById('error-message');
+
+            if (targetUrl) {
+                // যদি ইউজার https:// বা http:// না লেখে, তবে সেটি নিজে থেকে যোগ করে নেবে
+                if (!/^https?:\/\//i.test(targetUrl)) {
+                    targetUrl = 'https://' + targetUrl;
+                }
+                
+                // iFrame-এর src পরিবর্তন করা হচ্ছে
+                iframe.src = targetUrl;
+            } else {
+                // যদি কোনো URL না দেওয়া থাকে
+                iframe.style.display = 'none';
+                errorDiv.style.display = 'block';
+            }
+        };
+    </script>
+
+</body>
+</html>
