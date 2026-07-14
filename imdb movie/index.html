@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Movie Web Player</title>
+    <style>
+        :root {
+            --bg-color: #0f0f12;
+            --card-bg: #16161a;
+            --accent-color: #e50914;
+            --text-color: #ffffff;
+            --text-secondary: #94a3b8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .player-container {
+            width: 100%;
+            max-width: 850px;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            border: 1px solid #232329;
+        }
+
+        h2 {
+            margin-top: 0;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        input[type="text"], select {
+            padding: 14px 16px;
+            border: 1px solid #2d2d34;
+            border-radius: 8px;
+            background-color: #1f1f24;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"] {
+            flex: 2;
+            min-width: 200px;
+        }
+
+        select {
+            flex: 1;
+            min-width: 150px;
+            cursor: pointer;
+        }
+
+        input[type="text"]:focus, select:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2);
+        }
+
+        button {
+            padding: 14px 28px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease;
+        }
+
+        button:hover {
+            background-color: #c90812;
+        }
+        
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            background-color: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            display: none; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .placeholder-text {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 60px 20px;
+            border: 2px dashed #2d2d34;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="player-container">
+    <h2>Stream Web Player</h2>
+    
+    <div class="form-group">
+        <input type="text" id="imdbId" placeholder="Enter IMDb ID (e.g., tt0111161)" autocomplete="off">
+        
+        <select id="serverSelect">
+            <option value="https://streamimdb.ru/embed/movie/">Server 1 (StreamIMDb)</option>
+            <option value="https://vidsrc.me/embed/movie?imdb=">Server 2 (VidSrc Me)</option>
+            <option value="https://vidsrc.to/embed/movie/">Server 3 (VidSrc To)</option>
+        </select>
+        
+        <button onclick="loadMovie()">Play Movie</button>
+    </div>
+
+    <div id="placeholder" class="placeholder-text">
+        Enter an IMDb ID, select a server, and click "Play Movie" to start streaming.
+    </div>
+
+    <div id="videoWrapper" class="video-wrapper">
+        <iframe id="videoPlayer" src="" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
+    </div>
+</div>
+
+<script>
+    function loadMovie() {
+        const imdbIdInput = document.getElementById('imdbId').value.trim();
+        const serverBaseUrl = document.getElementById('serverSelect').value;
+        const player = document.getElementById('videoPlayer');
+        const wrapper = document.getElementById('videoWrapper');
+        const placeholder = document.getElementById('placeholder');
+
+        if (!imdbIdInput) {
+            alert('Please enter a valid IMDb ID or Link.');
+            return;
+        }
+
+        // Extract ID if user inputs full URL
+        let cleanId = imdbIdInput;
+        const match = imdbIdInput.match(/(tt\d+)/);
+        if (match) {
+            cleanId = match[1];
+        }
+
+        // Formulate correct embed source URL
+        const finalStreamUrl = serverBaseUrl + cleanId;
+
+        // Reset player to avoid cache freezing
+        player.src = ""; 
+        
+        // Load new source and render UI
+        setTimeout(() => {
+            player.src = finalStreamUrl;
+            placeholder.style.display = 'none';
+            wrapper.style.display = 'block';
+        }, 100);
+    }
+
+    // Enter Key Support
+    document.getElementById('imdbId').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            loadMovie();
+        }
+    });
+</script>
+
+</body>
+</html>
