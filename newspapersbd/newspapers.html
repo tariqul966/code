@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>বাংলাদেশের সংবাদ মাধ্যম</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800&display=swap" />
+    <style>
+        /* ── Reset & Base ── */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Open Sans', 'Segoe UI', sans-serif;
+            background: #f4f7fc;
+            color: #1e2a41;
+            padding: 30px 20px 60px;
+            min-height: 100vh;
+        }
+
+        /* ── Wrapper ── */
+        .wrapper {
+            max-width: 1360px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 32px;
+            padding: 40px 45px 55px;
+            box-shadow: 0 20px 60px rgba(0, 20, 50, 0.08);
+            transition: all 0.2s;
+        }
+
+        /* ── Header ── */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid #eef2f7;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(145deg, #0e4b8a, #1a6bc4);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 26px;
+            font-weight: 800;
+            box-shadow: 0 6px 16px rgba(26, 107, 196, 0.25);
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+            color: #0a1e3c;
+            line-height: 1.2;
+        }
+        h1 small {
+            display: block;
+            font-size: 15px;
+            font-weight: 400;
+            color: #6f7d98;
+            letter-spacing: 0.2px;
+            margin-top: 2px;
+        }
+
+        .header-stats {
+            font-size: 15px;
+            font-weight: 600;
+            color: #3b5a7a;
+            background: #eef4fc;
+            padding: 10px 22px;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+        .header-stats span {
+            background: #1a6bc4;
+            color: #fff;
+            border-radius: 30px;
+            padding: 0 12px;
+            font-size: 14px;
+            line-height: 26px;
+            margin-left: 4px;
+        }
+
+        /* ── Search ── */
+        .search-bar {
+            position: relative;
+            margin-bottom: 36px;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 16px 24px 16px 58px;
+            border: 2px solid #e2e8f0;
+            border-radius: 60px;
+            font-size: 16px;
+            font-family: inherit;
+            background: #fafcff;
+            transition: 0.25s;
+            outline: none;
+            color: #1a2a44;
+        }
+        .search-bar input:focus {
+            border-color: #1a6bc4;
+            background: #ffffff;
+            box-shadow: 0 0 0 6px rgba(26, 107, 196, 0.10);
+        }
+        .search-bar input::placeholder {
+            color: #9aabbf;
+            font-weight: 400;
+        }
+        .search-bar .search-icon {
+            position: absolute;
+            left: 22px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            color: #8a9bb0;
+            pointer-events: none;
+        }
+        .search-bar .clear-btn {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: #b0c0d0;
+            cursor: pointer;
+            display: none;
+            padding: 4px 8px;
+            border-radius: 30px;
+            transition: 0.2s;
+        }
+        .search-bar .clear-btn:hover {
+            color: #1a2a44;
+            background: #eef2f7;
+        }
+        .search-bar .clear-btn.visible {
+            display: block;
+        }
+
+        /* ── Category Tabs ── */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 32px;
+            border-bottom: 2px solid #eef2f7;
+            padding-bottom: 16px;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
+            color: #556b86;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .tab-btn:hover {
+            background: #eef4fc;
+            color: #1a3a5e;
+        }
+        .tab-btn.active {
+            background: #1a6bc4;
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(26, 107, 196, 0.30);
+        }
+        .tab-btn .badge {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 0 10px;
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 22px;
+        }
+        .tab-btn.active .badge {
+            background: rgba(255, 255, 255, 0.25);
+        }
+        .tab-btn:not(.active) .badge {
+            background: #e2e8f0;
+            color: #3b5a7a;
+        }
+
+        /* ── Category Sections ── */
+        .category-section {
+            display: none;
+            animation: fadeUp 0.35s ease;
+        }
+        .category-section.active {
+            display: block;
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0a1e3c;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-title .count {
+            font-size: 15px;
+            font-weight: 600;
+            color: #6f7d98;
+            background: #eef2f7;
+            padding: 0 14px;
+            border-radius: 30px;
+            line-height: 28px;
+        }
+
+        /* ── Grid ── */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 14px;
+        }
+        .grid-item {
+            background: #fafcff;
+            border: 1.5px solid #e8edf5;
+            border-radius: 16px;
+            padding: 14px 18px;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            min-height: 56px;
+        }
+        .grid-item:hover {
+            background: #ffffff;
+            border-color: #b6cbe0;
+            box-shadow: 0 6px 20px rgba(0, 20, 50, 0.06);
+            transform: translateY(-2px);
+        }
+        .grid-item a {
+            text-decoration: none;
+            color: #1a2a44;
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            transition: 0.15s;
+        }
+        .grid-item a .link-icon {
+            font-size: 18px;
+            opacity: 0.5;
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+        .grid-item:hover a .link-icon {
+            opacity: 0.9;
+            transform: translateX(2px);
+        }
+        .grid-item a .name {
+            word-break: break-word;
+            line-height: 1.3;
+        }
+        .grid-item a .arrow {
+            margin-left: auto;
+            font-size: 14px;
+            opacity: 0.2;
+            transition: 0.2s;
+        }
+        .grid-item:hover a .arrow {
+            opacity: 0.6;
+            transform: translateX(3px);
+        }
+
+        /* ── "No results" ── */
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px 20px;
+            color: #6f7d98;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .no-results span {
+            font-size: 40px;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        /* ── Footer ── */
+        .footer-note {
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 2px solid #eef2f7;
+            text-align: center;
+            font-size: 14px;
+            color: #8a9bb0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px 24px;
+        }
+        .footer-note strong {
+            color: #3b5a7a;
+            font-weight: 600;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 820px) {
+            .wrapper {
+                padding: 24px 18px 35px;
+                border-radius: 24px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            h1 small {
+                font-size: 13px;
+            }
+            .brand-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+            .header-stats {
+                font-size: 13px;
+                padding: 6px 16px;
+            }
+            .grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 10px;
+            }
+            .grid-item {
+                padding: 12px 14px;
+                min-height: 48px;
+            }
+            .grid-item a {
+                font-size: 14px;
+            }
+            .tabs {
+                gap: 6px;
+            }
+            .tab-btn {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+            .search-bar input {
+                padding: 14px 18px 14px 50px;
+                font-size: 15px;
+            }
+            .search-bar .search-icon {
+                left: 18px;
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 12px 10px 40px;
+            }
+            .wrapper {
+                padding: 18px 12px 28px;
+                border-radius: 18px;
+            }
+            .grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .grid-item {
+                padding: 10px 12px;
+                min-height: 44px;
+                border-radius: 12px;
+            }
+            .grid-item a {
+                font-size: 13px;
+                gap: 6px;
+            }
+            .grid-item a .link-icon {
+                font-size: 15px;
+            }
+            .grid-item a .arrow {
+                display: none;
+            }
+            .tab-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+                gap: 4px;
+            }
+            .tab-btn .badge {
+                font-size: 11px;
+                padding: 0 8px;
+                line-height: 20px;
+            }
+            h1 {
+                font-size: 19px;
+            }
+            .section-title {
+                font-size: 17px;
+            }
+            .header-stats {
+                font-size: 12px;
+                padding: 4px 12px;
+            }
+            .search-bar input {
+                padding: 12px 14px 12px 42px;
+                font-size: 14px;
+                border-radius: 40px;
+            }
+            .search-bar .search-icon {
+                left: 14px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+
+        <!-- HEADER -->
+        <header class="header">
+            <div class="header-left">
+                <div class="brand-icon">📰</div>
+                <h1>
+                    সংবাদ মাধ্যম
+                    <small>বাংলাদেশের দৈনিক, টিভি ও অনলাইন</small>
+                </h1>
+            </div>
+            <div class="header-stats">
+                📌 মোট <span id="totalCount">0</span>টি
+            </div>
+        </header>
+
+        <!-- SEARCH -->
+        <div class="search-bar">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="খুঁজুন সংবাদ মাধ্যমের নামে…" autocomplete="off" />
+            <button class="clear-btn" id="clearBtn" aria-label="Clear search">✕</button>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs" id="tabsContainer">
+            <button class="tab-btn active" data-tab="all">সব <span class="badge" id="badgeAll">0</span></button>
+            <button class="tab-btn" data-tab="bangla">বাংলা পত্রিকা <span class="badge" id="badgeBangla">0</span></button>
+            <button class="tab-btn" data-tab="english">ইংরেজি পত্রিকা <span class="badge" id="badgeEnglish">0</span></button>
+            <button class="tab-btn" data-tab="tv">টিভি চ্যানেল <span class="badge" id="badgeTv">0</span></button>
+            <button class="tab-btn" data-tab="portal">নিউজ পোর্টাল <span class="badge" id="badgePortal">0</span></button>
+        </div>
+
+        <!-- ===== CATEGORY SECTIONS ===== -->
+
+        <!-- ALL -->
+        <div class="category-section active" id="section-all">
+            <div class="section-title">📋 সব সংবাদ মাধ্যম <span class="count" id="countAll">0</span></div>
+            <div class="grid" id="gridAll"></div>
+        </div>
+
+        <!-- BANGLA -->
+        <div class="category-section" id="section-bangla">
+            <div class="section-title">📰 বাংলা পত্রিকা <span class="count" id="countBangla">0</span></div>
+            <div class="grid" id="gridBangla"></div>
+        </div>
+
+        <!-- ENGLISH -->
+        <div class="category-section" id="section-english">
+            <div class="section-title">📰 ইংরেজি পত্রিকা <span class="count" id="countEnglish">0</span></div>
+            <div class="grid" id="gridEnglish"></div>
+        </div>
+
+        <!-- TV -->
+        <div class="category-section" id="section-tv">
+            <div class="section-title">📺 টিভি চ্যানেল <span class="count" id="countTv">0</span></div>
+            <div class="grid" id="gridTv"></div>
+        </div>
+
+        <!-- PORTAL -->
+        <div class="category-section" id="section-portal">
+            <div class="section-title">🌐 নিউজ পোর্টাল <span class="count" id="countPortal">0</span></div>
+            <div class="grid" id="gridPortal"></div>
+        </div>
+
+        <!--<div class="footer-note">
+            <span>📬 <strong>সকল লিংক</strong> নতুন ট্যাবে খোলা হয়</span>
+            <span>🔄 <strong>রিডিজাইন</strong> – আধুনিক ও ব্যবহারবান্ধব</span>
+            <span>🇧🇩 <strong>বাংলাদেশের</strong> সংবাদ মাধ্যমের সমাহার</span>
+        </div>-->
+		
+		<div class="footer-note">
+            <span>@2026 Tariqul Hasan</span>
+        </div>
+
+    </div>
+
+    <script>
+        (function() {
+
+            // ── Data ──
+            const DATA = {
+
+                bangla: [
+                    { name: 'প্রথম আলো', url: 'https://www.prothomalo.com/' },
+                    { name: 'বাংলাদেশ প্রতিদিন', url: 'https://www.bd-pratidin.com/' },
+                    { name: 'কালের কণ্ঠ', url: 'https://www.kalerkantho.com/' },
+                    { name: 'নয়াদিগন্ত', url: 'https://www.dailynayadiganta.com/' },
+                    { name: 'যুগান্তর', url: 'https://jugantor.com/' },
+                    { name: 'ইত্তেফাক', url: 'https://www.ittefaq.com.bd/' },
+                    { name: 'দৈনিক সংগ্রাম', url: 'https://dailysangram.com/' },
+                    { name: 'মানবজমিন', url: 'https://mzamin.com/' },
+                    { name: 'আমাদের সময়', url: 'https://dainikamadershomoy.com/' },
+                    { name: 'যায় যায় দিন', url: 'https://jjdin.com/' },
+                    { name: 'জনকণ্ঠ', url: 'https://www.dailyjanakantha.com/' },
+                    { name: 'ভোরের কাগজ', url: 'https://www.bhorerkagoj.com/' },
+                    { name: 'দৈনিক ইনকিলাব', url: 'https://dailyinqilab.com/' },
+                    { name: 'বণিক বার্তা', url: 'https://bonikbarta.net/' },
+                    { name: 'সুপ্রভাত', url: 'https://suprobhat.com/' },
+                    { name: 'মানবকণ্ঠ', url: 'https://manobkantha.com.bd/' },
+                    { name: 'দৈনিক খবরপত্র', url: 'https://khoborpatrabd.com/' },
+                    { name: 'দৈনিক কালবেলা', url: 'https://www.kalbela.com/' },
+                    { name: 'আমার সংবাদ', url: 'https://www.amarsangbad.com/' },
+                    { name: 'দৈনিক সরেজমিন', url: 'https://sorejominbarta.com/' },
+                    { name: 'দৈনিক সমকাল', url: 'https://samakal.com/' },
+                    { name: 'আজকের পত্রিকা', url: 'https://www.ajkerpatrika.com/' },
+                    { name: 'ভোরের পাতা', url: 'https://www.dailyvorerpata.com/' },
+                    { name: 'প্রতিদিনের সংবাদ', url: 'https://www.protidinersangbad.com/' },
+                    { name: 'আজকালের খবর', url: 'https://www.ajkalerkhobor.net/' },
+                    { name: 'বাংলাদেশের খবর', url: 'https://www.bangladesherkhabor.net/' },
+                    { name: 'বাংলাদেশ জার্নাল', url: 'https://www.bd-journal.com/' },
+                    { name: 'অর্থনীতির কাগজ', url: 'https://arthoniteerkagoj.com/' },
+                    { name: 'আলোকিত বাংলাদেশ', url: 'https://www.alokitobangladesh.com/' },
+                    { name: 'আমাদের অর্থনীতি', url: 'https://amaderorthoneeti.com/new/' },
+                    { name: 'আজকের বাজার', url: 'https://www.ajkerbazzar.com/' },
+                    { name: 'দেশ রূপান্তর', url: 'https://www.deshrupantor.com/' },
+                    { name: 'সময়ের আলো', url: 'https://www.shomoyeralo.com/' },
+                    { name: 'দৈনিক গণকণ্ঠ', url: 'https://gonokantho.com/' },
+                    { name: 'বাংলাদেশের আলো', url: 'https://dailybangladesheralo.com/' }
+                ],
+
+                english: [
+                    { name: 'ডেইলি স্টার', url: 'https://www.thedailystar.net/' },
+                    { name: 'দি ইন্ডিপেন্ডেন্ট', url: 'https://theindependent.com.bd/' },
+                    { name: 'নিউ এজ', url: 'https://newagebd.net/' },
+                    { name: 'বাংলাদেশ টুডে', url: 'https://thebangladeshtoday.com/' },
+                    { name: 'দ্য নিউ নেশন', url: 'https://dailynewnation.com/' },
+                    { name: 'ডেইলি সান', url: 'https://www.daily-sun.com/' },
+                    { name: 'ডেইলি অবজারভার', url: 'https://www.observerbd.com/' },
+                    { name: 'বাংলাদেশ পোস্ট', url: 'https://bangladeshpost.net/' }
+                ],
+
+                tv: [
+                    { name: 'চ্যানেল আই', url: 'http://channelionline.com' },
+                    { name: 'সময় টিভি', url: 'https://www.somoynews.tv' },
+                    { name: 'ইন্ডিপেন্ডেন্ট ২৪', url: 'http://independent24.com' },
+                    { name: 'এনটিভি', url: 'https://www.ntvbd.com' },
+                    { name: 'যমুনা টিভি', url: 'http://jamuna.tv' },
+                    { name: 'গাজী টিভি', url: 'http://gazitv.com' },
+                    { name: 'চ্যানেল ২৪', url: 'https://www.channel24bd.tv' },
+                    { name: 'আরটিভি', url: 'https://www.rtvonline.com' },
+                    { name: 'একুশে টিভি', url: 'https://www.ekushey-tv.com' },
+                    { name: 'এটিএন বাংলা', url: 'https://www.atnbangla.tv' },
+                    { name: 'বৈশাখী টিভি', url: 'http://boishakhionline.com' },
+                    { name: 'এসএটিভি', url: 'https://www.satv.tv' },
+                    { name: 'মাছরাঙা টিভি', url: 'http://maasranga.tv' },
+                    { name: 'দেশ টিভি', url: 'https://desh.tv' },
+                    { name: 'বাংলা ভিশন', url: 'https://banglavision.tv' },
+                    { name: 'একাত্তর টিভি', url: 'http://ekattor.tv' },
+                    { name: 'চ্যানেল ৯', url: 'http://www.channelninebd.tv' },
+                    { name: 'মাই টিভি', url: 'http://mytvbd.tv' },
+                    { name: 'মোহনা টিভি', url: 'http://www.mohona.tv' },
+                    { name: 'এশিয়ান টিভি', url: 'https://www.asiantv.com.bd' },
+                    { name: 'গানবাংলা', url: 'http://gaanbangla.tv' },
+                    { name: 'বিটিভি', url: 'http://btv.gov.bd' },
+                    { name: 'বাংলা টিভি', url: 'https://banglatv.tv' },
+                    { name: 'আনন্দ টিভি', url: 'http://www.anandatv.tv' },
+                    { name: 'বিজয় টিভি', url: 'https://bijoy.tv' },
+                    { name: 'নিউজ ২৪', url: 'https://www.news24bd.tv' },
+                    { name: 'ডিবিসি নিউজ', url: 'https://dbcnews.tv' },
+                    { name: 'নাগরিক টিভি', url: 'https://nagorik.com' }
+                ],
+
+                portal: [
+                    { name: 'এফএনএস ২৪', url: 'http://fns24.com' },
+                    { name: 'বিএসএস', url: 'https://www.bssnews.net/bangla/' },
+                    { name: 'ইউএনবি', url: 'https://unb.com.bd/bangla' },
+                    { name: 'বিডি নিউজ ২৪', url: 'https://bangla.bdnews24.com' },
+                    { name: 'বাংলা নিউজ ২৪', url: 'https://www.banglanews24.com' },
+                    { name: 'বাংলা ট্রিবিউন', url: 'http://banglatribune.com' },
+                    { name: 'জাগো নিউজ ২৪', url: 'http://jagonews24.com' },
+                    { name: 'প্রিয় নিউজ', url: 'https://priyo.news/' },
+                    { name: 'আমাদের সময়', url: 'http://amadershomoy.com' },
+                    { name: 'বিবিসি বাংলা', url: 'https://bbc.com/bengali' },
+                    { name: 'ডেইলি বাংলাদেশ', url: 'https://www.daily-bangladesh.com/' },
+                    { name: 'বাংলা ইনসাইডার', url: 'https://www.banglainsider.com' },
+                    { name: 'দি রিপোর্ট ২৪', url: 'http://thereport24.com' },
+                    { name: 'বার্তা ২৪', url: 'http://barta24.com' },
+                    { name: 'আমার দেশ ২৪', url: 'http://amar-desh24.com' },
+                    { name: 'শীর্ষ নিউজ ২৪', url: 'https://www.sheershasangbad.com/' },
+                    { name: 'দি ঢাকা টাইমস', url: 'https://thedhakatimes.com' },
+                    { name: 'রাইজিং বিডি', url: 'http://risingbd.com' },
+                    { name: 'দেশে বিদেশে', url: 'https://deshebideshe.com' },
+                    { name: 'সারা বাংলা', url: 'https://sarabangla.net' },
+                    { name: 'পূর্ব পশ্চিম', url: 'https://www.pbd.news/' },
+                    { name: 'অর্থসূচক', url: 'http://www.arthosuchak.com' },
+                    { name: 'নতুন বার্তা', url: 'https://www.natun-barta.com/' },
+                    { name: 'সময়ের কণ্ঠস্বর', url: 'http://www.somoyerkonthosor.com' },
+                    { name: 'ঢাকা টাইমস ২৪', url: 'https://dhakatimes24.com' },
+                    { name: 'টেক শহর', url: 'https://techshohor.com' },
+                    { name: 'ঢাকা পোস্ট', url: 'https://www.dhakapost.com/' },
+                    { name: 'অপরাজেয় বাংলা', url: 'https://www.aparajeobangla.com/' },
+                    { name: 'ঢাকা টুডে', url: 'https://www.dhakatoday.com' },
+                    { name: 'আরটিএনএন', url: 'https://rtnnbd.net/' },
+                    { name: 'ঢাকা প্রকাশ', url: 'https://www.dhakaprokash24.com/' },
+                    { name: 'বিডি২৪লাইভ', url: 'https://www.bd24live.com/bangla/' }
+                ]
+            };
+
+            // ── DOM refs ──
+            const searchInput = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('clearBtn');
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const sections = {
+                all: document.getElementById('section-all'),
+                bangla: document.getElementById('section-bangla'),
+                english: document.getElementById('section-english'),
+                tv: document.getElementById('section-tv'),
+                portal: document.getElementById('section-portal')
+            };
+            const grids = {
+                all: document.getElementById('gridAll'),
+                bangla: document.getElementById('gridBangla'),
+                english: document.getElementById('gridEnglish'),
+                tv: document.getElementById('gridTv'),
+                portal: document.getElementById('gridPortal')
+            };
+            const counts = {
+                all: document.getElementById('countAll'),
+                bangla: document.getElementById('countBangla'),
+                english: document.getElementById('countEnglish'),
+                tv: document.getElementById('countTv'),
+                portal: document.getElementById('countPortal')
+            };
+            const badges = {
+                all: document.getElementById('badgeAll'),
+                bangla: document.getElementById('badgeBangla'),
+                english: document.getElementById('badgeEnglish'),
+                tv: document.getElementById('badgeTv'),
+                portal: document.getElementById('badgePortal')
+            };
+            const totalSpan = document.getElementById('totalCount');
+
+            let currentTab = 'all';
+            let currentSearch = '';
+
+            // ── Helpers ──
+            function createItem(item) {
+                const div = document.createElement('div');
+                div.className = 'grid-item';
+                div.innerHTML = `
+                    <a href="${item.url}" target="_blank" rel="noopener">
+                        <span class="link-icon">🔗</span>
+                        <span class="name">${item.name}</span>
+                        <span class="arrow">→</span>
+                    </a>
+                `;
+                return div;
+            }
+
+            function filterItems(items, query) {
+                if (!query.trim()) return items;
+                const q = query.trim().toLowerCase();
+                return items.filter(it => it.name.toLowerCase().includes(q));
+            }
+
+            function renderGrid(gridEl, items, query) {
+                const filtered = filterItems(items, query);
+                gridEl.innerHTML = '';
+                if (filtered.length === 0) {
+                    const empty = document.createElement('div');
+                    empty.className = 'no-results';
+                    empty.innerHTML = `<span>🔎</span> "${query.trim() || 'সব'}" — কোনো মাধ্যম খুঁজে পাওয়া যায়নি`;
+                    gridEl.appendChild(empty);
+                } else {
+                    filtered.forEach(item => gridEl.appendChild(createItem(item)));
+                }
+                return filtered.length;
+            }
+
+            function updateAll(query) {
+                const q = query || currentSearch;
+                const allItems = [
+                    ...DATA.bangla, ...DATA.english, ...DATA.tv, ...DATA.portal
+                ];
+                const totalAll = allItems.length;
+
+                // render each section with its own filter
+                const lenBangla = renderGrid(grids.bangla, DATA.bangla, q);
+                const lenEnglish = renderGrid(grids.english, DATA.english, q);
+                const lenTv = renderGrid(grids.tv, DATA.tv, q);
+                const lenPortal = renderGrid(grids.portal, DATA.portal, q);
+                const lenAll = lenBangla + lenEnglish + lenTv + lenPortal;
+
+                // update counts
+                counts.all.textContent = lenAll;
+                counts.bangla.textContent = lenBangla;
+                counts.english.textContent = lenEnglish;
+                counts.tv.textContent = lenTv;
+                counts.portal.textContent = lenPortal;
+
+                badges.all.textContent = totalAll;
+                badges.bangla.textContent = DATA.bangla.length;
+                badges.english.textContent = DATA.english.length;
+                badges.tv.textContent = DATA.tv.length;
+                badges.portal.textContent = DATA.portal.length;
+
+                totalSpan.textContent = totalAll;
+
+                // also render "all" grid (all items filtered)
+                const filteredAll = filterItems(allItems, q);
+                grids.all.innerHTML = '';
+                if (filteredAll.length === 0) {
+                    const empty = document.createElement('div');
+                    empty.className = 'no-results';
+                    empty.innerHTML = `<span>🔎</span> "${q.trim() || 'সব'}" — কোনো মাধ্যম খুঁজে পাওয়া যায়নি`;
+                    grids.all.appendChild(empty);
+                } else {
+                    filteredAll.forEach(item => grids.all.appendChild(createItem(item)));
+                }
+                // all count already set above
+            }
+
+            function switchTab(tabId) {
+                currentTab = tabId;
+                tabBtns.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.tab === tabId);
+                });
+                Object.keys(sections).forEach(key => {
+                    sections[key].classList.toggle('active', key === tabId);
+                });
+                // re-run search to refresh counts in the active tab
+                updateAll(currentSearch);
+            }
+
+            // ── Event listeners ──
+
+            // Tabs
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tab = this.dataset.tab;
+                    if (tab !== currentTab) {
+                        switchTab(tab);
+                    }
+                });
+            });
+
+            // Search
+            searchInput.addEventListener('input', function() {
+                currentSearch = this.value;
+                clearBtn.classList.toggle('visible', this.value.length > 0);
+                updateAll(currentSearch);
+            });
+
+            clearBtn.addEventListener('click', function() {
+                searchInput.value = '';
+                currentSearch = '';
+                clearBtn.classList.remove('visible');
+                updateAll('');
+                searchInput.focus();
+            });
+
+            // ── Init ──
+            updateAll('');
+            switchTab('all');
+
+            // ── Keyboard shortcut: Escape clears search ──
+            searchInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    clearBtn.click();
+                }
+            });
+
+        })();
+    </script>
+
+</body>
+</html>
